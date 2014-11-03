@@ -18,8 +18,36 @@
 
     </head>
     <body>
-        <main class="container">
+        <main class="container" ng-app="MovieApp" ng-controller="MoviesController">
             <h1>Movies from 2014</h1>
+
+            <p>
+                <input type="search" class="form-control" ng-model="searchString" placeholder="search for title"/>
+            </p>
+
+            <p>{{filteredMovies.length}} {{filteredMovies.length == 1 ? 'movie' : 'movies'}}</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th ng-click="sortBy('title')">Title</th>
+                        <th ng-click="sortBy('studio')">Studio</th>
+                        <th ng-click="sortBy('releaseDate')">Release Date</th>
+                        <th ng-click="sortBy('grossSales')">Gross Sales</th>
+                        <th ng-click="sortBy('ticketsSold')">Tickets Sold</th>
+                        <th ng-click="sortBy('grossSales/ticketsSold')">Avg Ticket Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="movie in filteredMovies = (movies | filter : {title: searchString} | orderBy : sortCol : sortReverse)">
+                        <td>{{movie.title}}</td>
+                        <td>{{movie.studio}}</td>
+                        <td>{{movie.releaseDate | date: "yyyy-MM-dd"}}</td>
+                        <td>{{movie.grossSales | currency : '$' : 0}}</td>
+                        <td>{{movie.ticketsSold | number}}</td>
+                        <td>{{(movie.grossSales/movie.ticketsSold) | currency : '$' : 4}}</td>
+                    </tr>
+                </tbody>
+            </table>
 
         </main>
 
